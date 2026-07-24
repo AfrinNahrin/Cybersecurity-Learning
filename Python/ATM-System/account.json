@@ -1,6 +1,12 @@
 {
-    "username": "Afrin",
-    "pin": "1234",
-    "balance": 10000,
-    "history": []
+    "1001": {
+        "name": "Afrin",
+        "pin": "1234",
+        "balance": 10001
+    },
+    "1002": {
+        "name": "Nipu",
+        "pin": "5678",
+        "balance": 5000
+    }
 }
