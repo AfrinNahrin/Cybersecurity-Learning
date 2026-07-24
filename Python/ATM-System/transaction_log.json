@@ -1,1 +1,14 @@
-[]
+[
+    {
+        "account": "1001",
+        "type": "Deposit",
+        "amount": 1000.0,
+        "balance": 11001.0
+    },
+    {
+        "account": "1001",
+        "type": "Withdraw",
+        "amount": 500.0,
+        "balance": 10501.0
+    }
+]

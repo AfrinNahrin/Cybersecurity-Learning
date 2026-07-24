@@ -101,6 +101,32 @@ def save_accounts():
         json.dump(accounts, file, indent=4)
 
 # ==========================
+# SAVE TRANSACTION HISTORY
+# ==========================
+
+def save_transactions():
+
+    with open(TRANSACTION_FILE, "w", encoding="utf-8") as file:
+        json.dump(transactions, file, indent=4)
+
+# ==========================
+# RECORD TRANSACTION
+# ==========================
+
+def add_transaction(account_number, transaction_type, amount):
+
+    transaction = {
+        "account": account_number,
+        "type": transaction_type,
+        "amount": amount,
+        "balance": accounts[account_number]["balance"]
+    }
+
+    transactions.append(transaction)
+
+    save_transactions()
+
+# ==========================
 # DEPOSIT MONEY
 # ==========================
 
@@ -119,11 +145,71 @@ def deposit(current_user):
 
         save_accounts()
 
+        add_transaction(current_user, "Deposit", amount)
+
         print("\nDeposit Successful!")
         print(f"Current Balance: {accounts[current_user]['balance']} TK")
 
     except ValueError:
         print("Please Enter Numbers Only!")
+
+
+# ==========================
+# WITHDRAW MONEY
+# ==========================
+
+def withdraw(current_user):
+
+    print("\n========== WITHDRAW ==========")
+
+    try:
+        amount = float(input("Enter Withdraw Amount: "))
+
+        if amount <= 0:
+            print("Invalid Amount!")
+            return
+
+        current_balance = accounts[current_user]["balance"]
+
+        if amount > current_balance:
+            print("Insufficient Balance!")
+            return
+
+        accounts[current_user]["balance"] -= amount
+
+        save_accounts()
+
+        add_transaction(current_user, "Withdraw", amount)
+
+        print("\nWithdraw Successful!")
+        print(f"Remaining Balance: {accounts[current_user]['balance']} TK")
+
+    except ValueError:
+        print("Please Enter Numbers Only!")
+
+# ==========================
+# SHOW TRANSACTION HISTORY
+# ==========================
+
+def show_history(current_user):
+
+    print("\n========== TRANSACTION HISTORY ==========")
+
+    found = False
+
+    for transaction in transactions:
+
+        if transaction["account"] == current_user:
+
+            print("----------------------------")
+            print("Type   :", transaction["type"])
+            print("Amount :", transaction["amount"], "TK")
+            print("Balance:", transaction["balance"], "TK")
+
+            found = True
+
+    if not found:
+        print("No Transactions Found.")
 
 
 # ==========================
@@ -144,6 +230,12 @@ while True:
 
     elif choice == "2":
         deposit(current_user)
+
+    elif choice == "3":
+         withdraw(current_user)
+
+    elif choice == "4":
+         show_history(current_user)
 
     elif choice == "6":
         print("\nThank You For Using Our ATM.")
