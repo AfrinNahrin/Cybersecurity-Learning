@@ -211,6 +211,43 @@ def show_history(current_user):
     if not found:
         print("No Transactions Found.")
 
+# ==========================
+# CHANGE PIN
+# ==========================
+
+def change_pin(current_user):
+
+    print("\n========== CHANGE PIN ==========")
+
+    current_pin = input("Enter Current PIN: ")
+
+    if current_pin != accounts[current_user]["pin"]:
+        print("Incorrect Current PIN!")
+        return
+
+    new_pin = input("Enter New PIN: ")
+    confirm_pin = input("Confirm New PIN: ")
+
+    if new_pin != confirm_pin:
+        print("PIN Does Not Match!")
+        return
+
+    if len(new_pin) != 4 or not new_pin.isdigit():
+        print("PIN Must Be Exactly 4 Digits!")
+        return
+
+    if new_pin == current_pin:
+        print("New PIN Cannot Be Same As Old PIN!")
+        return
+
+    accounts[current_user]["pin"] = new_pin
+
+    save_accounts()
+
+    add_transaction(current_user, "PIN Changed", 0)
+
+    print("\nPIN Changed Successfully!")
+
 
 # ==========================
 # MAIN PROGRAM
@@ -236,6 +273,9 @@ while True:
 
     elif choice == "4":
          show_history(current_user)
+
+    elif choice == "5":
+         change_pin(current_user)
 
     elif choice == "6":
         print("\nThank You For Using Our ATM.")

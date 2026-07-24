@@ -10,5 +10,11 @@
         "type": "Withdraw",
         "amount": 500.0,
         "balance": 10501.0
+    },
+    {
+        "account": "1001",
+        "type": "PIN Changed",
+        "amount": 0,
+        "balance": 10501.0
     }
 ]
