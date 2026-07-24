@@ -71,7 +71,9 @@ def show_menu():
     print("3. Withdraw")
     print("4. Transaction History")
     print("5. Change PIN")
-    print("6. Exit")
+    print("6. Transfer Money")
+    print("7. Exit")
+    
 
     return input("\nEnter Your Choice: ")
 
@@ -248,6 +250,58 @@ def change_pin(current_user):
 
     print("\nPIN Changed Successfully!")
 
+# ==========================
+# MONEY TRANSFER
+# ==========================
+
+def transfer_money(current_user):
+
+    print("\n========== MONEY TRANSFER ==========")
+
+    receiver = input("Enter Receiver Account Number: ")
+
+    # Receiver exists?
+    if receiver not in accounts:
+        print("Receiver Account Not Found!")
+        return
+
+    # Same account check
+    if receiver == current_user:
+        print("You Cannot Transfer To Your Own Account!")
+        return
+
+    try:
+
+        amount = float(input("Enter Transfer Amount: "))
+
+        if amount <= 0:
+            print("Invalid Amount!")
+            return
+
+        if amount > accounts[current_user]["balance"]:
+            print("Insufficient Balance!")
+            return
+
+        # Sender Balance
+        accounts[current_user]["balance"] -= amount
+
+        # Receiver Balance
+        accounts[receiver]["balance"] += amount
+
+        save_accounts()
+
+        add_transaction(current_user, "Transfer Sent", amount)
+
+        add_transaction(receiver, "Transfer Received", amount)
+
+        print("\nTransfer Successful!")
+
+        print(f"Your Current Balance: {accounts[current_user]['balance']} TK")
+
+    except ValueError:
+
+        print("Please Enter Numbers Only!")
+
 
 # ==========================
 # MAIN PROGRAM
@@ -278,8 +332,11 @@ while True:
          change_pin(current_user)
 
     elif choice == "6":
-        print("\nThank You For Using Our ATM.")
-        break
+         transfer_money(current_user)
+
+    elif choice == "7":
+          print("\nThank You For Using Our ATM.")
+          break
 
     else:
         print("\nThis Feature Will Be Added Soon.")

@@ -2,11 +2,11 @@
     "1001": {
         "name": "Afrin",
         "pin": "4321",
-        "balance": 10501.0
+        "balance": 10001.0
     },
     "1002": {
         "name": "Nipu",
         "pin": "5678",
-        "balance": 5000
+        "balance": 5500.0
     }
 }

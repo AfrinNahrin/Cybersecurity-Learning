@@ -16,5 +16,17 @@
         "type": "PIN Changed",
         "amount": 0,
         "balance": 10501.0
+    },
+    {
+        "account": "1001",
+        "type": "Transfer Sent",
+        "amount": 500.0,
+        "balance": 10001.0
+    },
+    {
+        "account": "1002",
+        "type": "Transfer Received",
+        "amount": 500.0,
+        "balance": 5500.0
     }
 ]
