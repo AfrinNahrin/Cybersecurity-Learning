@@ -1,5 +1,6 @@
 import json
 import uuid
+import os
 from datetime import datetime
 # ==========================
 # SAVE ACCOUNT DATA
@@ -48,3 +49,41 @@ def add_transaction(accounts,
     transactions.append(transaction)
 
     save_transactions(transaction_file, transactions)
+    
+# ==========================
+# PRINT RECEIPT
+# ==========================
+
+def print_receipt(accounts,
+                  account_number,
+                  transaction_type,
+                  amount,
+                  base_dir):
+
+    receipt = f"""
+===================================
+            ATM RECEIPT
+===================================
+
+Account Holder : {accounts[account_number]["name"]}
+Account Number : {account_number}
+
+Transaction    : {transaction_type}
+Amount         : {amount:.2f} TK
+
+Current Balance: {accounts[account_number]["balance"]:.2f} TK
+
+Date           : {datetime.now().strftime("%d-%m-%Y")}
+Time           : {datetime.now().strftime("%I:%M:%S %p")}
+
+===================================
+Thank You For Banking With Us
+===================================
+"""
+
+    print(receipt)
+
+    receipt_file = os.path.join(base_dir, "receipt.txt")
+
+    with open(receipt_file, "w", encoding="utf-8") as file:
+        file.write(receipt)

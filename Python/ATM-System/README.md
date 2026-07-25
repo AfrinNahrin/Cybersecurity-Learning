@@ -1,33 +1,42 @@
 # 🏦 ATM Management System (Python)
 
-A simple ATM Management System built with Python for learning programming fundamentals.
+A modular ATM Management System built with Python. This project simulates real-world ATM operations such as login, balance checking, deposit, withdrawal, money transfer, PIN change, transaction history, and receipt generation.
 
 ---
 
-## 📌 Features
+## 🚀 Features
 
-- 🔐 Secure PIN Login
-- 💰 Check Balance
+- 🔐 Secure Login (3 Attempts)
+- 💰 Check Account Balance
 - ➕ Deposit Money
 - ➖ Withdraw Money
+- 🔄 Money Transfer
+- 🔑 Change ATM PIN
 - 📜 Transaction History
-- 🔑 Change PIN
-- 💾 JSON Database
-- 👤 Multiple User Support
+- 🧾 Receipt Generation
+- 💾 JSON Database Storage
+- 🆔 Unique Transaction ID
+- 📅 Date & Time Logging
+- 📂 Modular Python Project Structure
 
 ---
 
 ## 📂 Project Structure
 
+```text
 ATM-System/
-
-├── atm-system.py
-
-├── account.json
-
-├── transaction_log.json
-
-└── README.md
+│
+├── atm_system.py              # Main Program
+├── account.py                 # Login, Balance, PIN
+├── transaction.py             # Deposit, Withdraw, Transfer
+├── utils.py                   # Utility Functions
+│
+├── account.json               # Account Database
+├── transaction_log.json       # Transaction History
+│
+├── README.md
+└── atm_system_v37_backup.py
+```
 
 ---
 
@@ -35,49 +44,108 @@ ATM-System/
 
 - Python 3
 - JSON
-- Functions
 - File Handling
+- Modular Programming
+- UUID
+- Datetime
 
 ---
 
-## ▶ How to Run
+## 📌 Current Features
 
-```bash
-python atm-system.py
+### Login
+
+- 3 Login Attempts
+- Invalid Account Detection
+- Invalid PIN Detection
+
+### Account
+
+- Check Balance
+- Change PIN
+
+### Transactions
+
+- Deposit
+- Withdraw
+- Money Transfer
+
+### History
+
+- Stores every transaction
+- Transaction ID
+- Date
+- Time
+- Updated Balance
+
+---
+
+## 📷 Sample Menu
+
+```text
+=========================
+        ATM MENU
+=========================
+1. Check Balance
+2. Deposit
+3. Withdraw
+4. Transaction History
+5. Change PIN
+6. Transfer Money
+7. Exit
 ```
 
 ---
 
-## 📚 Learning Objectives
+## 💾 Data Storage
 
-This project helps practice:
+Account information is stored in
 
-- Variables
-- Functions
-- Conditional Statements
-- Loops
-- Lists
-- Dictionaries
-- JSON
-- File Handling
-- Authentication Logic
+```text
+account.json
+```
+
+Transaction history is stored in
+
+```text
+transaction_log.json
+```
 
 ---
 
-## 🚀 Future Improvements
+## 🔄 Current Version
 
+Current Version:
+
+```
+V4.0
+```
+
+---
+
+## 📈 Future Improvements
+
+- Receipt Folder
 - Admin Panel
-- Account Registration
+- Create New Account
+- Delete Account
 - Password Encryption
-- Receipt Generation
+- OTP Verification
+- SQLite Database
+- MySQL Database
 - GUI Version (Tkinter)
-- Database Version (SQLite)
-- Object-Oriented Programming (OOP)
+- Web Version (Flask)
+- REST API
+- Unit Testing
 
 ---
 
-## 👩‍💻 Author
+## 👨‍💻 Author
 
-**Afrin Nahar Nipu**
+Developed by **Afrin Nahar Nipu**
 
-Learning Python for Cybersecurity 🚀
+GitHub:
+https://github.com/AfrinNahrin
+---
+
+⭐ If you like this project, consider giving it a Star.

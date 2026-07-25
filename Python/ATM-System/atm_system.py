@@ -1,10 +1,7 @@
 import os
 import json
 from datetime import datetime
-from utils import (
-    save_accounts,
-    add_transaction,
-)
+from utils import print_receipt
 from account import (
     login,
     check_balance,
@@ -61,26 +58,6 @@ def show_menu():
     return input("\nEnter Your Choice: ")
 
 # ==========================
-# PRINT RECEIPT
-# ==========================
-
-def print_receipt(account_number, transaction_type, amount):
-
-    print("\n" + "=" * 35)
-    print("         ATM RECEIPT")
-    print("=" * 35)
-
-    print("Account Holder :", accounts[account_number]["name"])
-    print("Account No     :", account_number)
-    print("Transaction    :", transaction_type)
-    print("Amount         :", amount, "TK")
-    print("Balance        :", accounts[account_number]["balance"], "TK")
-    print("Date           :", datetime.now().strftime("%d-%m-%Y"))
-    print("Time           :", datetime.now().strftime("%I:%M:%S %p"))
-
-    print("=" * 35)
-
-# ==========================
 # MAIN PROGRAM
 # ==========================
 
@@ -98,23 +75,25 @@ while True:
 
     elif choice == "2":
         deposit(
-               accounts,
-               current_user,
-               ACCOUNT_FILE,
-               transactions,
-               TRANSACTION_FILE,
-               print_receipt,
-                     )
+    accounts,
+    current_user,
+    ACCOUNT_FILE,
+    transactions,
+    TRANSACTION_FILE,
+    BASE_DIR,
+    print_receipt,
+)
 
     elif choice == "3":
          withdraw(
-                 accounts,
-                 current_user,
-                 ACCOUNT_FILE,
-                 transactions,
-                 TRANSACTION_FILE,
-                 print_receipt,
-                       )
+    accounts,
+    current_user,
+    ACCOUNT_FILE,
+    transactions,
+    TRANSACTION_FILE,
+    BASE_DIR,
+    print_receipt,
+)
 
     elif choice == "4":
          show_history(
@@ -133,13 +112,14 @@ while True:
 
     elif choice == "6":
          transfer_money(
-                    accounts,
-                    current_user,
-                    ACCOUNT_FILE,
-                    transactions,
-                    TRANSACTION_FILE,
-                    print_receipt,
-                       )
+    accounts,
+    current_user,
+    ACCOUNT_FILE,
+    transactions,
+    TRANSACTION_FILE,
+    BASE_DIR,
+    print_receipt,
+)
 
     elif choice == "7":
           print("\nThank You For Using Our ATM.")

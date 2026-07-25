@@ -1,0 +1,19 @@
+
+===================================
+            ATM RECEIPT
+===================================
+
+Account Holder : Afrin
+Account Number : 1001
+
+Transaction    : Withdraw
+Amount         : 500.00 TK
+
+Current Balance: 8901.00 TK
+
+Date           : 25-07-2026
+Time           : 06:21:56 PM
+
+===================================
+Thank You For Banking With Us
+===================================

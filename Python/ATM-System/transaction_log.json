@@ -16,5 +16,23 @@
         "type": "Transfer Received",
         "amount": 200.0,
         "balance": 6200.0
+    },
+    {
+        "transaction_id": "32a8f5a6",
+        "date": "25-07-2026",
+        "time": "06:21:29 PM",
+        "account": "1001",
+        "type": "Deposit",
+        "amount": 100.0,
+        "balance": 9401.0
+    },
+    {
+        "transaction_id": "7ba3309a",
+        "date": "25-07-2026",
+        "time": "06:21:56 PM",
+        "account": "1001",
+        "type": "Withdraw",
+        "amount": 500.0,
+        "balance": 8901.0
     }
 ]

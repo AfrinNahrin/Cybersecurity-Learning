@@ -2,13 +2,15 @@ from utils import save_accounts, add_transaction
 # ==========================
 # DEPOSIT MONEY
 # ==========================
-def deposit(accounts,
-            current_user,
-            account_file,
-            transactions,
-            transaction_file,
-            print_receipt):
-
+def deposit(
+    accounts,
+    current_user,
+    account_file,
+    transactions,
+    transaction_file,
+    base_dir,
+    print_receipt,
+):
     print("\n========== DEPOSIT ==========")
 
     try:
@@ -34,21 +36,28 @@ def deposit(accounts,
         print("\nDeposit Successful!")
         print(f"Current Balance: {accounts[current_user]['balance']:.2f} TK")
 
-        print_receipt(current_user, "Deposit", amount)
+        print_receipt(
+                    accounts,
+                    current_user,
+                    "Deposit",
+                    amount,
+                    base_dir,
+)
 
     except ValueError:
         print("Please Enter Numbers Only!")
 # ==========================
 # WITHDRAW MONEY
 # ==========================
-
-def withdraw(accounts,
-             current_user,
-             account_file,
-             transactions,
-             transaction_file,
-             print_receipt):
-
+def withdraw(
+    accounts,
+    current_user,
+    account_file,
+    transactions,
+    transaction_file,
+    base_dir,
+    print_receipt,
+):
     print("\n========== WITHDRAW ==========")
 
     try:
@@ -79,7 +88,13 @@ def withdraw(accounts,
 
         print("\nWithdraw Successful!")
         print(f"Remaining Balance: {accounts[current_user]['balance']} TK")
-        print_receipt(current_user, "Withdraw", amount)
+        print_receipt(
+                    accounts,
+                    current_user,
+                    "Withdraw",
+                    amount,
+                    base_dir,
+                       )
 
     except ValueError:
         print("Please Enter Numbers Only!")
@@ -120,14 +135,15 @@ def show_history(transactions, current_user):
 # ==========================
 # MONEY TRANSFER
 # ==========================
-
-def transfer_money(accounts,
-                   current_user,
-                   account_file,
-                   transactions,
-                   transaction_file,
-                   print_receipt):
-
+def transfer_money(
+    accounts,
+    current_user,
+    account_file,
+    transactions,
+    transaction_file,
+    base_dir,
+    print_receipt,
+):
     receiver = input("\nEnter Receiver Account Number: ")
 
     if receiver not in accounts:
@@ -179,7 +195,12 @@ def transfer_money(accounts,
 
         print("\nTransfer Successful!")
         print(f"{amount} TK Sent To {accounts[receiver]['name']}")
-        print_receipt(current_user, "Transfer Sent", amount)
-
+        print_receipt(
+                      accounts,
+                      current_user,
+                      "Transfer Sent",
+                       amount,
+                       base_dir,
+                           )
     except ValueError:
         print("Please Enter Numbers Only!")
