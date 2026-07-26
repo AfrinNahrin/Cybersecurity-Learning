@@ -1,12 +1,6 @@
 import re
-import math
-import json
-import os
-
 from common_passwords import COMMON_PASSWORDS
 from patterns import SEQUENTIAL_PATTERNS
-
-
 # -------------------------
 # Validation Functions
 # -------------------------
@@ -46,6 +40,9 @@ def check_repeated_characters(password):
 def check_common_password(password):
     return password.lower() in COMMON_PASSWORDS
 
+def check_common_password(password):
+    return password.lower() in COMMON_PASSWORDS
+
 
 def check_sequential_pattern(password):
     password = password.lower()
@@ -74,94 +71,9 @@ def get_strength(score):
     else:
         return "Weak ❌"
 
-# -------------------------
-# Risk Level
-# -------------------------
-
-def get_risk_level(entropy):
-
-    if entropy >= 60:
-        return "Low 🟢"
-
-    elif entropy >= 40:
-        return "Medium 🟡"
-
-    else:
-        return "High 🔴"
 
 # -------------------------
-# Password Statistics
-# -------------------------
-
-def password_statistics(password):
-
-    upper = sum(1 for c in password if c.isupper())
-    lower = sum(1 for c in password if c.islower())
-    digits = sum(1 for c in password if c.isdigit())
-    special = len(password) - upper - lower - digits
-
-    return {
-        "length": len(password),
-        "uppercase": upper,
-        "lowercase": lower,
-        "numbers": digits,
-        "special": special
-    }
-
-# -------------------------
-# JSON Report Export
-# -------------------------
-
-def save_report(password, score, entropy, risk_level, stats):
-    os.makedirs("reports", exist_ok=True)
-
-    report = {
-        "password": password,
-        "score": score,
-        "entropy": entropy,
-        "strength": get_strength(score),
-        "risk_level": risk_level,
-        "statistics": stats
-    }
-
-    with open(
-        "reports/password_report.json",
-        "w"
-    ) as file:
-
-        json.dump(
-            report,
-            file,
-            indent=4
-        )
-# -------------------------
-# Entropy Calculator
-# -------------------------
-
-def calculate_entropy(password):
-    pool_size = 0
-
-    if check_lowercase(password):
-        pool_size += 26
-
-    if check_uppercase(password):
-        pool_size += 26
-
-    if check_number(password):
-        pool_size += 10
-
-    if check_special_character(password):
-        pool_size += 32
-
-    if pool_size == 0:
-        return 0
-
-    entropy = len(password) * math.log2(pool_size)
-
-    return round(entropy, 2)
-
-# -------------------------
-# Main Password Checker
+# Main Checker
 # -------------------------
 
 def check_password(password):
@@ -171,7 +83,7 @@ def check_password(password):
 
     print("\n========== PASSWORD REPORT ==========\n")
 
-    # Length Check
+    # Length
     if check_length(password):
         print("✅ Length Check              : Passed")
         score += 1
@@ -179,7 +91,7 @@ def check_password(password):
         print("❌ Length Check              : Failed")
         feedback.append("Password should be at least 8 characters.")
 
-    # Uppercase Check
+    # Uppercase
     if check_uppercase(password):
         print("✅ Uppercase Check           : Passed")
         score += 1
@@ -187,7 +99,7 @@ def check_password(password):
         print("❌ Uppercase Check           : Failed")
         feedback.append("Add at least one uppercase letter.")
 
-    # Lowercase Check
+    # Lowercase
     if check_lowercase(password):
         print("✅ Lowercase Check           : Passed")
         score += 1
@@ -195,7 +107,7 @@ def check_password(password):
         print("❌ Lowercase Check           : Failed")
         feedback.append("Add at least one lowercase letter.")
 
-    # Number Check
+    # Number
     if check_number(password):
         print("✅ Number Check              : Passed")
         score += 1
@@ -203,7 +115,7 @@ def check_password(password):
         print("❌ Number Check              : Failed")
         feedback.append("Add at least one number.")
 
-    # Special Character Check
+    # Special Character
     if check_special_character(password):
         print("✅ Special Character Check   : Passed")
         score += 1
@@ -214,16 +126,17 @@ def check_password(password):
     # Repeated Character Check
     if check_repeated_characters(password):
         print("⚠ Repeated Characters       : Found")
-        feedback.append("Avoid repeated characters like 'aaa' or '111'.")
+        feedback.append("Avoid repeated characters like aaa or 111.")
     else:
         print("✅ Repeated Characters       : Not Found")
 
-    # Sequential Pattern Check
+       # Sequential Pattern Check
     if check_sequential_pattern(password):
         print("⚠ Sequential Pattern        : Found")
         feedback.append("Avoid sequential patterns like '1234', 'abcd', or 'qwerty'.")
     else:
         print("✅ Sequential Pattern        : Not Found")
+        
 
     # Common Password Check
     if check_common_password(password):
@@ -232,33 +145,9 @@ def check_password(password):
     else:
         print("✅ Common Password           : No")
 
- # -------------------------
- # Password Report
- # -------------------------
-
-    entropy = calculate_entropy(password)
-    risk_level = get_risk_level(entropy)
-    stats = password_statistics(password)
-    save_report(
-    password,
-    score,
-    entropy,
-    risk_level,
-    stats
-          )
-
     print("\n==============================")
     print(f"Password Score : {score}/5")
-    print(f"Entropy        : {entropy} bits")
     print(f"Strength       : {get_strength(score)}")
-    print(f"Risk Level     : {risk_level}")
-
-    print("\n----------- Password Statistics -----------")
-    print(f"Length              : {stats['length']}")
-    print(f"Uppercase Letters   : {stats['uppercase']}")
-    print(f"Lowercase Letters   : {stats['lowercase']}")
-    print(f"Numbers             : {stats['numbers']}")
-    print(f"Special Characters  : {stats['special']}")
 
     print("\nSuggestions:")
 
