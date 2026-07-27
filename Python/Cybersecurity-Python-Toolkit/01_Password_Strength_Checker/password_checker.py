@@ -2,9 +2,15 @@ import re
 import math
 import json
 import os
+import webbrowser
+
+HISTORY_FILE = "reports/password_history.txt"
 
 from common_passwords import COMMON_PASSWORDS
 from patterns import SEQUENTIAL_PATTERNS
+from colorama import Fore, Style, init
+
+init(autoreset=True)
 
 
 # -------------------------
@@ -111,7 +117,6 @@ def password_statistics(password):
 # -------------------------
 # JSON Report Export
 # -------------------------
-
 def save_report(password, score, entropy, risk_level, stats):
     os.makedirs("reports", exist_ok=True)
 
@@ -124,16 +129,138 @@ def save_report(password, score, entropy, risk_level, stats):
         "statistics": stats
     }
 
-    with open(
-        "reports/password_report.json",
-        "w"
-    ) as file:
+    file_path = os.path.join(
+        "reports",
+        "password_report.json"
+    )
 
+    with open(file_path, "w", encoding="utf-8") as file:
         json.dump(
             report,
             file,
-            indent=4
+            indent=4,
+            ensure_ascii=False
         )
+
+    print("✅ JSON Report Saved Successfully!")
+    print(f"📂 Saved to: {os.path.abspath(file_path)}")
+
+# -------------------------
+# Open Reports Automatically
+# -------------------------
+
+def open_reports():
+
+    reports = [
+        "reports/password_report.json",
+        "reports/password_report.csv",
+        "reports/password_report.txt"
+    ]
+
+    for report in reports:
+
+        if os.path.exists(report):
+            webbrowser.open(os.path.abspath(report))
+
+# -------------------------
+# Password History
+# -------------------------
+
+def save_password_history(password):
+
+    os.makedirs("reports", exist_ok=True)
+
+    with open(
+        HISTORY_FILE,
+        "a",
+        encoding="utf-8"
+    ) as file:
+
+        file.write(password + "\n")
+
+def password_exists(password):
+
+    if not os.path.exists(HISTORY_FILE):
+        return False
+
+    with open(
+        HISTORY_FILE,
+        "r",
+        encoding="utf-8"
+    ) as file:
+
+        passwords = file.read().splitlines()
+
+    return password in passwords
+
+# -------------------------
+# TXT Report Export
+# -------------------------
+
+def save_text_report(password, score, entropy, risk_level, stats, feedback):
+
+    os.makedirs("reports", exist_ok=True)
+
+    file_path = os.path.join("reports", "password_report.txt")
+
+    with open(file_path, "w", encoding="utf-8") as file:
+
+        file.write("========== PASSWORD REPORT ==========\n\n")
+
+        file.write(f"Password   : {password}\n")
+        file.write(f"Score      : {score}/5\n")
+        file.write(f"Entropy    : {entropy} bits\n")
+        file.write(f"Strength   : {get_strength(score)}\n")
+        file.write(f"Risk Level : {risk_level}\n\n")
+
+        file.write("----- Password Statistics -----\n")
+        file.write(f"Length              : {stats['length']}\n")
+        file.write(f"Uppercase Letters   : {stats['uppercase']}\n")
+        file.write(f"Lowercase Letters   : {stats['lowercase']}\n")
+        file.write(f"Numbers             : {stats['numbers']}\n")
+        file.write(f"Special Characters  : {stats['special']}\n\n")
+
+        file.write("Suggestions:\n")
+
+        if not feedback:
+            file.write("Excellent! No suggestions.\n")
+        else:
+            for item in feedback:
+                file.write(f"- {item}\n")
+
+    print("✅ TXT Report Saved Successfully!")
+
+# -------------------------
+# CSV Report Export
+# -------------------------
+
+def save_csv_report(password, score, entropy, risk_level, stats):
+
+    os.makedirs("reports", exist_ok=True)
+
+    file_path = os.path.join("reports", "password_report.csv")
+
+    with open(file_path, "w", encoding="utf-8") as file:
+
+        file.write(
+            "Password,Score,Entropy,Strength,Risk Level,"
+            "Length,Uppercase,Lowercase,Numbers,Special Characters\n"
+        )
+
+        file.write(
+            f"{password},"
+            f"{score},"
+            f"{entropy},"
+            f"{get_strength(score)},"
+            f"{risk_level},"
+            f"{stats['length']},"
+            f"{stats['uppercase']},"
+            f"{stats['lowercase']},"
+            f"{stats['numbers']},"
+            f"{stats['special']}"
+        )
+
+    print("✅ CSV Report Saved Successfully!")
 # -------------------------
 # Entropy Calculator
 # -------------------------
@@ -169,69 +296,68 @@ def check_password(password):
     score = 0
     feedback = []
 
-    print("\n========== PASSWORD REPORT ==========\n")
+    print(Fore.CYAN + "\n========== PASSWORD REPORT ==========\n")
 
     # Length Check
     if check_length(password):
-        print("✅ Length Check              : Passed")
+        print(Fore.GREEN + "✅ Length Check              : Passed")
         score += 1
     else:
-        print("❌ Length Check              : Failed")
+        print(Fore.RED + "❌ Length Check              : Failed")
         feedback.append("Password should be at least 8 characters.")
 
     # Uppercase Check
     if check_uppercase(password):
-        print("✅ Uppercase Check           : Passed")
+        print(Fore.GREEN + "✅ Uppercase Check           : Passed")
         score += 1
     else:
-        print("❌ Uppercase Check           : Failed")
+        print(Fore.RED + "❌ Uppercase Check           : Failed")
         feedback.append("Add at least one uppercase letter.")
 
     # Lowercase Check
     if check_lowercase(password):
-        print("✅ Lowercase Check           : Passed")
+        print(Fore.GREEN + "✅ Lowercase Check           : Passed")
         score += 1
     else:
-        print("❌ Lowercase Check           : Failed")
+        print(Fore.RED + "❌ Lowercase Check           : Failed")
         feedback.append("Add at least one lowercase letter.")
 
     # Number Check
     if check_number(password):
-        print("✅ Number Check              : Passed")
+        print(Fore.GREEN + "✅ Number Check              : Passed")
         score += 1
     else:
-        print("❌ Number Check              : Failed")
+        print(Fore.RED + "❌ Number Check              : Failed")
         feedback.append("Add at least one number.")
 
     # Special Character Check
     if check_special_character(password):
-        print("✅ Special Character Check   : Passed")
+        print(Fore.GREEN + "✅ Special Character Check   : Passed")
         score += 1
     else:
-        print("❌ Special Character Check   : Failed")
+        print(Fore.RED + "❌ Special Character Check   : Failed")
         feedback.append("Add at least one special character.")
 
     # Repeated Character Check
     if check_repeated_characters(password):
-        print("⚠ Repeated Characters       : Found")
+        print(Fore.YELLOW + "⚠ Repeated Characters       : Found")
         feedback.append("Avoid repeated characters like 'aaa' or '111'.")
     else:
-        print("✅ Repeated Characters       : Not Found")
+        print(Fore.GREEN + "✅ Repeated Characters       : Not Found")
 
     # Sequential Pattern Check
     if check_sequential_pattern(password):
-        print("⚠ Sequential Pattern        : Found")
+        print(Fore.YELLOW + "⚠ Sequential Pattern        : Found")
         feedback.append("Avoid sequential patterns like '1234', 'abcd', or 'qwerty'.")
     else:
-        print("✅ Sequential Pattern        : Not Found")
+        print(Fore.GREEN + "✅ Sequential Pattern        : Not Found")
 
     # Common Password Check
     if check_common_password(password):
-        print("⚠ Common Password           : Yes")
+        print(Fore.YELLOW + "⚠ Common Password           : Yes")
         feedback.append("Avoid common passwords.")
     else:
-        print("✅ Common Password           : No")
-
+        print(Fore.GREEN + "✅ Common Password           : No")
  # -------------------------
  # Password Report
  # -------------------------
@@ -246,24 +372,40 @@ def check_password(password):
     risk_level,
     stats
           )
+    save_text_report(
+    password,
+    score,
+    entropy,
+    risk_level,
+    stats,
+    feedback
+         )
+    save_csv_report(
+    password,
+    score,
+    entropy,
+    risk_level,
+    stats
+         )
 
-    print("\n==============================")
-    print(f"Password Score : {score}/5")
-    print(f"Entropy        : {entropy} bits")
-    print(f"Strength       : {get_strength(score)}")
-    print(f"Risk Level     : {risk_level}")
+    print(Fore.CYAN + "\n==============================")
+    print(Fore.CYAN + f"Password Score : {score}/5")
+    print(Fore.MAGENTA + f"Entropy        : {entropy} bits")
+    print(Fore.GREEN + f"Strength       : {get_strength(score)}")
+    print(Fore.YELLOW + f"Risk Level     : {risk_level}")
 
-    print("\n----------- Password Statistics -----------")
+    print(Fore.CYAN + "\n----------- Password Statistics -----------")
     print(f"Length              : {stats['length']}")
     print(f"Uppercase Letters   : {stats['uppercase']}")
     print(f"Lowercase Letters   : {stats['lowercase']}")
     print(f"Numbers             : {stats['numbers']}")
     print(f"Special Characters  : {stats['special']}")
 
-    print("\nSuggestions:")
+    print(Fore.CYAN + "\nSuggestions:")
 
     if not feedback:
         print("✅ Excellent! No suggestions.")
     else:
         for item in feedback:
             print(f"- {item}")
+    open_reports()
