@@ -4,7 +4,9 @@ import json
 import os
 import webbrowser
 
-HISTORY_FILE = "reports/password_history.txt"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+REPORT_DIR = os.path.join(BASE_DIR, "reports")
+HISTORY_FILE = os.path.join(REPORT_DIR, "password_history.txt")
 
 from common_passwords import COMMON_PASSWORDS
 from patterns import SEQUENTIAL_PATTERNS
@@ -117,6 +119,11 @@ def password_statistics(password):
 # -------------------------
 # JSON Report Export
 # -------------------------
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+REPORT_DIR = os.path.join(BASE_DIR, "reports")
+
+os.makedirs(REPORT_DIR, exist_ok=True)
+
 def save_report(password, score, entropy, risk_level, stats):
     os.makedirs("reports", exist_ok=True)
 
@@ -130,9 +137,10 @@ def save_report(password, score, entropy, risk_level, stats):
     }
 
     file_path = os.path.join(
-        "reports",
-        "password_report.json"
-    )
+    REPORT_DIR,
+    "password_report.json"
+)
+    
 
     with open(file_path, "w", encoding="utf-8") as file:
         json.dump(
@@ -144,6 +152,8 @@ def save_report(password, score, entropy, risk_level, stats):
 
     print("✅ JSON Report Saved Successfully!")
     print(f"📂 Saved to: {os.path.abspath(file_path)}")
+    print(f"Saved JSON to: {file_path}")
+    print(f"Current Working Directory: {os.getcwd()}")
 
 # -------------------------
 # Open Reports Automatically
@@ -168,7 +178,7 @@ def open_reports():
 
 def save_password_history(password):
 
-    os.makedirs("reports", exist_ok=True)
+    os.makedirs(REPORT_DIR, exist_ok=True)
 
     with open(
         HISTORY_FILE,
@@ -201,7 +211,7 @@ def save_text_report(password, score, entropy, risk_level, stats, feedback):
 
     os.makedirs("reports", exist_ok=True)
 
-    file_path = os.path.join("reports", "password_report.txt")
+    file_path = os.path.join(REPORT_DIR, "password_report.txt")
 
     with open(file_path, "w", encoding="utf-8") as file:
 
@@ -238,7 +248,7 @@ def save_csv_report(password, score, entropy, risk_level, stats):
 
     os.makedirs("reports", exist_ok=True)
 
-    file_path = os.path.join("reports", "password_report.csv")
+    file_path = os.path.join(REPORT_DIR, "password_report.csv")
 
     with open(file_path, "w", encoding="utf-8") as file:
 
