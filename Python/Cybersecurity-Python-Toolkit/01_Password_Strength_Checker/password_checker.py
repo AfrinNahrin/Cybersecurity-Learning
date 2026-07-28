@@ -202,6 +202,51 @@ def password_exists(password):
         passwords = file.read().splitlines()
 
     return password in passwords
+# -------------------------
+# View Password History
+# -------------------------
+
+def view_password_history():
+
+    if not os.path.exists(HISTORY_FILE):
+
+        print("\nNo password history found.")
+        return
+
+    print("\n========== PASSWORD HISTORY ==========\n")
+
+    with open(
+        HISTORY_FILE,
+        "r",
+        encoding="utf-8"
+    ) as file:
+
+        passwords = file.readlines()
+
+    if not passwords:
+
+        print("History is empty.")
+        return
+
+    for index, password in enumerate(passwords, start=1):
+
+        print(f"{index}. {password.strip()}")
+
+# -------------------------
+# Clear Password History
+# -------------------------
+
+def clear_password_history():
+
+    if os.path.exists(HISTORY_FILE):
+
+        open(HISTORY_FILE, "w").close()
+
+        print("\n✅ Password history cleared.")
+
+    else:
+
+        print("\nNo history found.")
 
 # -------------------------
 # TXT Report Export
@@ -302,6 +347,12 @@ def calculate_entropy(password):
 # -------------------------
 
 def check_password(password):
+   
+
+    if password_exists(password):
+        print(Fore.YELLOW + "\n⚠ Password already exists in history!")
+    else:
+        save_password_history(password)
 
     score = 0
     feedback = []
