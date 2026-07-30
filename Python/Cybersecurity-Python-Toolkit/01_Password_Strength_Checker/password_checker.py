@@ -125,8 +125,7 @@ REPORT_DIR = os.path.join(BASE_DIR, "reports")
 os.makedirs(REPORT_DIR, exist_ok=True)
 
 def save_report(password, score, entropy, risk_level, stats):
-    os.makedirs("reports", exist_ok=True)
-
+    os.makedirs(REPORT_DIR, exist_ok=True)
     report = {
         "password": password,
         "score": score,
@@ -154,6 +153,7 @@ def save_report(password, score, entropy, risk_level, stats):
     print(f"📂 Saved to: {os.path.abspath(file_path)}")
     print(f"Saved JSON to: {file_path}")
     print(f"Current Working Directory: {os.getcwd()}")
+    print(f"JSON Updated For: {password}")
 
 # -------------------------
 # Open Reports Automatically
@@ -254,7 +254,7 @@ def clear_password_history():
 
 def save_text_report(password, score, entropy, risk_level, stats, feedback):
 
-    os.makedirs("reports", exist_ok=True)
+    os.makedirs(REPORT_DIR, exist_ok=True)
 
     file_path = os.path.join(REPORT_DIR, "password_report.txt")
 
@@ -291,8 +291,7 @@ def save_text_report(password, score, entropy, risk_level, stats, feedback):
 
 def save_csv_report(password, score, entropy, risk_level, stats):
 
-    os.makedirs("reports", exist_ok=True)
-
+    os.makedirs(REPORT_DIR, exist_ok=True)
     file_path = os.path.join(REPORT_DIR, "password_report.csv")
 
     with open(file_path, "w", encoding="utf-8") as file:
@@ -347,7 +346,8 @@ def calculate_entropy(password):
 # -------------------------
 
 def check_password(password):
-   
+
+    print(">>> check_password() started")
 
     if password_exists(password):
         print(Fore.YELLOW + "\n⚠ Password already exists in history!")
@@ -426,6 +426,7 @@ def check_password(password):
     entropy = calculate_entropy(password)
     risk_level = get_risk_level(entropy)
     stats = password_statistics(password)
+    print(">>> About to save JSON")
     save_report(
     password,
     score,
@@ -433,6 +434,8 @@ def check_password(password):
     risk_level,
     stats
           )
+    print(">>> JSON saved")
+    print("\nDEBUG:", password)
     save_text_report(
     password,
     score,
